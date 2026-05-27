@@ -35,7 +35,6 @@ export default function AuctionDetailPage() {
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
-
       await fetchAuction();
       await fetchBids();
 
