@@ -72,7 +72,6 @@ export function AuthProvider({ children }) {
 
   const isAdmin = user?.role === 'Admin';
   const isLoggedIn = !!token;
-
   return (
     <AuthContext.Provider
       value={{
