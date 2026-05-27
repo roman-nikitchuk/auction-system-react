@@ -6,7 +6,6 @@ import { useAuth } from '../context/AuthContext';
 export default function AuctionDetailPage() {
   const { id } = useParams();
   const { user } = useAuth();
-
   const [auction, setAuction] = useState(null);
   const [bids, setBids] = useState([]);
   const [bidAmount, setBidAmount] = useState('');
