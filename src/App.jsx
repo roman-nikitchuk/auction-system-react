@@ -1,12 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ProfilePage from './pages/ProfilePage';
-import AuctionDetailPage from './pages/AuctionDetailPage';
-import CreateAuctionPage from './pages/CreateAuctionPage';
-import UserManagementPage from './pages/UserManagementPage';
-import CategoryManagementPage from './pages/CategoryManagementPage';
+
+import { HomePage } from './pages/HomePage';
+import { LoginPage } from './pages/LoginPage';
+import { RegisterPage } from './pages/RegisterPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { AuctionDetailPage } from './pages/AuctionDetailPage';
+import { CreateAuctionPage } from './pages/CreateAuctionPage';
+import { UserManagementPage } from './pages/UserManagementPage';
+import { CategoryManagementPage } from './pages/CategoryManagementPage';
+
 import { AuthProvider } from './context/AuthContext';
 import './App.css';
 

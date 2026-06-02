@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 
-export default function AuctionDetailPage() {
+export function AuctionDetailPage() {
   const { id } = useParams();
   const { user } = useAuth();
   const [auction, setAuction] = useState(null);
