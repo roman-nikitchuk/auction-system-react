@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { Navbar } from '../components/Navbar';
+import { useAuth } from '../context/AuthContext';
 
 export function CreateAuctionPage() {
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     const [categories, setCategories] = useState([]);
 
@@ -31,14 +33,12 @@ export function CreateAuctionPage() {
         loadCategories();
     }, []);
 
-  
     const handleChange = (e) => {
         setForm((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
         }));
     };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -53,8 +53,10 @@ export function CreateAuctionPage() {
                 title: form.title,
                 description: form.description,
                 startingPrice: Number(form.startingPrice),
-                categoryId: form.categoryId, 
+                categoryId: Number(form.categoryId),
+                startDate: new Date().toISOString(),
                 endDate: new Date(form.endDate).toISOString(),
+                ownerId: user.id,
             });
 
             navigate(`/auctions/${response.data.id}`);
@@ -74,7 +76,6 @@ export function CreateAuctionPage() {
                 {error && <p style={{ color: 'red' }}>{error}</p>}
 
                 <form onSubmit={handleSubmit}>
-                   
                     <input
                         name="title"
                         placeholder="Tytuł"
@@ -84,7 +85,6 @@ export function CreateAuctionPage() {
                         style={inputStyle}
                     />
 
-                  
                     <textarea
                         name="description"
                         placeholder="Opis"
@@ -94,7 +94,6 @@ export function CreateAuctionPage() {
                         style={{ ...inputStyle, minHeight: '150px' }}
                     />
 
-                   
                     <input
                         type="number"
                         name="startingPrice"
@@ -105,7 +104,6 @@ export function CreateAuctionPage() {
                         style={inputStyle}
                     />
 
-                   
                     <select
                         name="categoryId"
                         value={form.categoryId}
@@ -133,7 +131,6 @@ export function CreateAuctionPage() {
                         style={inputStyle}
                     />
 
-                    
                     <button type="submit" style={buttonStyle}>
                         Utwórz aukcję
                     </button>
@@ -142,7 +139,6 @@ export function CreateAuctionPage() {
         </>
     );
 }
-
 
 const inputStyle = {
     width: '100%',
