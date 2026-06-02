@@ -47,7 +47,6 @@ export function AuctionDetailPage() {
     e.preventDefault();
     setBidError(null);
     setBidSuccess(null);
-
     try {
       await api.post(`/auctions/${id}/bids`, {
         userId: user.id,
@@ -85,8 +84,27 @@ export function AuctionDetailPage() {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <h1>{auction.title}</h1>
 
+      
+      <button
+        onClick={() => navigate('/')}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          color: '#aaa',
+          fontSize: '14px',
+          marginBottom: '20px',
+          padding: '0',
+        }}
+      >
+        ← Powrót do listy
+      </button>
+
+      <h1>{auction.title}</h1>
       <p><strong>Kategoria:</strong> {auction.category?.name}</p>
       <p><strong>Opis:</strong> {auction.description}</p>
       <p><strong>Cena początkowa:</strong> {auction.startingPrice} zł</p>
@@ -95,7 +113,6 @@ export function AuctionDetailPage() {
       <p><strong>Koniec aukcji:</strong> {endDate}</p>
       <p><strong>Właściciel:</strong> {auction.owner?.userName}</p>
 
-      {/* Przycisk usunięcia — widoczny dla właściciela lub admina */}
       {(isOwner || isAdmin) && (
         <button
           onClick={handleDelete}
