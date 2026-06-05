@@ -43,11 +43,14 @@ export function CreateAuctionPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!form.categoryId) {
-            setError('Wybierz kategorię');
-            return;
-        }
+        if (!form.title.trim()) { setError('Podaj tytuł'); return; }
+        if (!form.description.trim()) { setError('Podaj opis'); return; }
+        if (!form.startingPrice || Number(form.startingPrice) <= 0) { setError('Cena początkowa musi być większa od 0'); return; }
+        if (!form.categoryId) { setError('Wybierz kategorię'); return; }
+        if (!form.endDate) { setError('Podaj datę zakończenia'); return; }
+        if (new Date(form.endDate) <= new Date()) { setError('Data zakończenia musi być w przyszłości'); return; }
 
+        setError('');
         try {
             const response = await api.post('/auctions', {
                 title: form.title,
@@ -61,8 +64,7 @@ export function CreateAuctionPage() {
 
             navigate(`/auctions/${response.data.id}`);
         } catch (err) {
-            console.log(err);
-            setError('Nie udało się utworzyć aukcji');
+            setError(err.response?.data || 'Nie udało się utworzyć aukcji');
         }
     };
 
@@ -81,7 +83,6 @@ export function CreateAuctionPage() {
                         placeholder="Tytuł"
                         value={form.title}
                         onChange={handleChange}
-                        required
                         style={inputStyle}
                     />
 
@@ -90,7 +91,6 @@ export function CreateAuctionPage() {
                         placeholder="Opis"
                         value={form.description}
                         onChange={handleChange}
-                        required
                         style={{ ...inputStyle, minHeight: '150px' }}
                     />
 
@@ -100,7 +100,6 @@ export function CreateAuctionPage() {
                         placeholder="Cena początkowa"
                         value={form.startingPrice}
                         onChange={handleChange}
-                        required
                         style={inputStyle}
                     />
 
@@ -108,7 +107,6 @@ export function CreateAuctionPage() {
                         name="categoryId"
                         value={form.categoryId}
                         onChange={handleChange}
-                        required
                         style={inputStyle}
                     >
                         <option value="" disabled>
@@ -127,7 +125,6 @@ export function CreateAuctionPage() {
                         name="endDate"
                         value={form.endDate}
                         onChange={handleChange}
-                        required
                         style={inputStyle}
                     />
 

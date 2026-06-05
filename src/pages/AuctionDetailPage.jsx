@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { Navbar } from '../components/Navbar';
 
 export function AuctionDetailPage() {
   const { id } = useParams();
@@ -58,7 +59,7 @@ export function AuctionDetailPage() {
       await fetchBids();
     } catch (err) {
       setBidError(
-        err.response?.data?.message || 'Błąd podczas składania oferty'
+        err.response?.data || 'Błąd podczas składania oferty'
       );
     }
   };
@@ -83,6 +84,8 @@ export function AuctionDetailPage() {
   const endDate = new Date(auction.endDate).toLocaleString();
 
   return (
+    <>
+    <Navbar />
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
 
       
@@ -105,13 +108,13 @@ export function AuctionDetailPage() {
       </button>
 
       <h1>{auction.title}</h1>
-      <p><strong>Kategoria:</strong> {auction.category?.name}</p>
+      <p><strong>Kategoria:</strong> {auction.categoryName}</p>
       <p><strong>Opis:</strong> {auction.description}</p>
       <p><strong>Cena początkowa:</strong> {auction.startingPrice} zł</p>
       <p><strong>Aktualna oferta:</strong> {auction.currentBid} zł</p>
       <p><strong>Status:</strong> {auction.status}</p>
       <p><strong>Koniec aukcji:</strong> {endDate}</p>
-      <p><strong>Właściciel:</strong> {auction.owner?.userName}</p>
+      <p><strong>Właściciel:</strong> {auction.ownerName}</p>
 
       {(isOwner || isAdmin) && (
         <button
@@ -201,5 +204,6 @@ export function AuctionDetailPage() {
         </table>
       )}
     </div>
+    </>
   );
 }

@@ -17,20 +17,12 @@ export function AuthProvider({ children }) {
             setToken(token);
 
             const payload = JSON.parse(atob(token.split('.')[1]));
-            const userId =
-                payload[
-                'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
-                ];
-            const role =
-                payload[
-                'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-                ];
-
-            const userResponse = await api.get(`/users/${userId}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            const userData = { ...userResponse.data, role };
+            const userData = {
+                id: parseInt(payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']),
+                userName: payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
+                email: payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
+                role: payload['role'],
+            };
 
             localStorage.setItem('user', JSON.stringify(userData));
             setUser(userData);
@@ -39,7 +31,7 @@ export function AuthProvider({ children }) {
         } catch (err) {
             return {
                 success: false,
-                error: err.response?.data?.message || 'Błąd logowania',
+                error: err.response?.data || 'Błąd logowania',
             };
         }
     };

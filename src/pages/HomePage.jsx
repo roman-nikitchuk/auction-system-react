@@ -114,7 +114,7 @@ export function HomePage() {
                         >
                             <h3 style={{ margin: '0 0 8px' }}>{auction.title}</h3>
                             <p style={{ margin: '4px 0', color: '#555', fontSize: '0.9rem' }}>
-                                {auction.category?.name || 'Brak kategorii'}
+                                {auction.categoryName || 'Brak kategorii'}
                             </p>
                             <p style={{ margin: '4px 0' }}>
                                 <strong>Aktualna oferta:</strong> {auction.currentBid} zł

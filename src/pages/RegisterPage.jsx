@@ -27,7 +27,7 @@ export function RegisterPage() {
 
         try {
             await api.post('/auth/register', {
-                username: form.username,
+                userName: form.username,
                 email: form.email,
                 password: form.password,
             });
@@ -38,8 +38,7 @@ export function RegisterPage() {
                 navigate('/login');
             }, 1200);
         } catch (err) {
-            console.log(err);
-            setError('Nie udało się utworzyć konta');
+            setError(err.response?.data || 'Nie udało się utworzyć konta');
         }
     };
 
