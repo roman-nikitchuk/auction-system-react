@@ -1,78 +1,95 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Navbar } from '../components/Navbar';
 
 export function LoginPage() {
     const navigate = useNavigate();
-
-    const { login } = useAuth(); // 👈 TYLKO tutaj
+    const { login } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const result = await login(email, password);
-
-        if (result.success) {
-            navigate('/');
-        } else {
-            setError(result.error);
-        }
+        setLoading(false);
+        if (result.success) navigate('/');
+        else setError(result.error);
     };
 
     return (
-        <>
-            <Navbar />
+        <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
 
-            <div style={{ maxWidth: '500px', margin: '40px auto' }}>
-                <h1>Logowanie</h1>
+            {/* Logo */}
+            <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', marginBottom: '32px' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M15 12l-8.5 8.5a2.12 2.12 0 0 1-3-3L12 9"/><path d="M17.64 15L22 10.64"/>
+                    <path d="M20.91 11.7l-1.25-1.25c.53-.78.51-1.82-.15-2.51L15 3.46c-.66-.69-1.7-.71-2.48-.18L11.27 4.53"/>
+                    <path d="M12.22 3.18l8.56 8.56"/>
+                </svg>
+                <span style={{ fontWeight: '700', fontSize: '1.1rem', color: '#111' }}>System Aukcyjny</span>
+            </Link>
 
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+            {/* Card */}
+            <div style={{ width: '100%', maxWidth: '420px', backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '14px', padding: '36px 40px' }}>
+                <h1 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#111', marginBottom: '6px' }}>Witaj z powrotem</h1>
+                <p style={{ color: '#888', fontSize: '0.88rem', marginBottom: '28px' }}>Zaloguj się, aby kontynuować licytację</p>
 
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        style={inputStyle}
-                    />
+                {error && (
+                    <div style={{ backgroundColor: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', padding: '11px 14px', marginBottom: '20px', color: '#dc2626', fontSize: '0.85rem' }}>
+                        {error}
+                    </div>
+                )}
 
-                    <input
-                        type="password"
-                        placeholder="Hasło"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        style={inputStyle}
-                    />
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div>
+                        <label style={labelStyle}>Email</label>
+                        <input
+                            type="email"
+                            placeholder="twoj@email.com"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            style={inputStyle}
+                            onFocus={e => e.target.style.borderColor = '#111'}
+                            onBlur={e => e.target.style.borderColor = '#e5e7eb'}
+                        />
+                    </div>
 
-                    <button type="submit" style={buttonStyle}>
-                        Zaloguj się
+                    <div>
+                        <label style={labelStyle}>Hasło</label>
+                        <input
+                            type="password"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            style={inputStyle}
+                            onFocus={e => e.target.style.borderColor = '#111'}
+                            onBlur={e => e.target.style.borderColor = '#e5e7eb'}
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        style={{ marginTop: '8px', padding: '12px', backgroundColor: loading ? '#555' : '#111', color: '#fff', border: 'none', borderRadius: '8px', cursor: loading ? 'not-allowed' : 'pointer', fontWeight: '600', fontSize: '0.92rem' }}
+                    >
+                        {loading ? 'Logowanie...' : 'Zaloguj się'}
                     </button>
                 </form>
 
-                <p>
-                    Nie masz konta? <Link to="/register">Zarejestruj się</Link>
+                <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '0.85rem', color: '#888' }}>
+                    Nie masz konta?{' '}
+                    <Link to="/register" style={{ color: '#111', fontWeight: '600', textDecoration: 'none' }}>
+                        Zarejestruj się
+                    </Link>
                 </p>
             </div>
-        </>
+        </div>
     );
 }
 
-const inputStyle = {
-    width: '100%',
-    padding: '10px',
-    marginBottom: '12px',
-};
-
-const buttonStyle = {
-    width: '100%',
-    padding: '12px',
-    cursor: 'pointer',
-};
+const labelStyle = { display: 'block', fontSize: '0.83rem', fontWeight: '500', color: '#374151', marginBottom: '6px' };
+const inputStyle = { width: '100%', padding: '10px 14px', border: '1px solid #e5e7eb', borderRadius: '8px', fontSize: '0.9rem', color: '#111', outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s' };
