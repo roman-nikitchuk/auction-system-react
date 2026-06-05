@@ -32,6 +32,23 @@ export function CategoryManagementPage() {
         }
     };
 
+    const handleDelete = async (id) => {
+        if (!window.confirm('Usunąć kategorię?')) return;
+        try {
+            await api.delete(`/categories/${id}`);
+            setCategories(categories.filter(c => c.id !== id));
+        } catch (err) {
+            const status = err.response?.status;
+            if (status === 500) {
+                alert('Nie można usunąć kategorii — jest używana przez aukcje.');
+            } else if (status === 403) {
+                alert('Brak uprawnień.');
+            } else {
+                alert(err.response?.data || 'Błąd podczas usuwania kategorii.');
+            }
+        }
+    };
+
     const handleCreate = async () => {
         if (!newName.trim()) { setCreateError('Podaj nazwę kategorii'); return; }
         setCreateError(null);
@@ -129,6 +146,13 @@ export function CategoryManagementPage() {
                                             <line x1="7" y1="7" x2="7.01" y2="7"/>
                                         </svg>
                                         {cat.name}
+                                        <button
+                                            onClick={() => handleDelete(cat.id)}
+                                            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', fontSize: '0.9rem', padding: '0 0 0 4px', lineHeight: 1 }}
+                                            title="Usuń kategorię"
+                                        >
+                                            ×
+                                        </button>
                                     </div>
                                 ))}
                             </div>
