@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { Navbar } from '../components/Navbar';
 
 export function UserManagementPage() {
     const { isAdmin } = useAuth();
@@ -115,6 +116,8 @@ export function UserManagementPage() {
     }
 
     return (
+        <>
+        <Navbar />
         <div
             style={{
                 maxWidth: '900px',
@@ -216,5 +219,6 @@ export function UserManagementPage() {
                 </div>
             )}
         </div>
+        </>
     );
 }
