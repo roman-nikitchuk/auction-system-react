@@ -15,7 +15,7 @@ export function RegisterPage() {
         e.preventDefault();
         if (!form.username.trim()) { setError('Podaj nazwę użytkownika'); return; }
         if (!form.email.trim()) { setError('Podaj email'); return; }
-        if (form.password.length < 4) { setError('Hasło musi mieć co najmniej 4 znaki'); return; }
+        if (form.password.length < 8) { setError('Hasło musi mieć co najmniej 8 znaki'); return; }
 
         setLoading(true);
         try {
