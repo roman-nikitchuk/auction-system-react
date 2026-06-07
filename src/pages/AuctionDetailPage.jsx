@@ -149,7 +149,7 @@ export function AuctionDetailPage() {
                             <img
                                 src={auction.imageUrl}
                                 alt={auction.title}
-                                style={{ width: '100%', height: '420px', objectFit: 'cover', borderRadius: '12px', marginBottom: '28px' }}
+                                style={{ width: '100%', height: '420px', objectFit: 'contain', backgroundColor: '#f3f4f6', borderRadius: '12px', marginBottom: '28px' }}
                                 onError={e => { e.target.style.display = 'none'; }}
                             />
                         ) : (

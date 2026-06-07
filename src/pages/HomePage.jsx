@@ -132,8 +132,10 @@ export function HomePage() {
                 {/* Auction grid */}
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 340px))',
+                    gridTemplateColumns: 'repeat(4, 1fr)',
                     gap: '24px',
+                    maxWidth: '1432px',
+                    margin: '0 auto',
                 }}>
                     {auctions.map((auction) => (
                         <div
@@ -145,6 +147,7 @@ export function HomePage() {
                                 backgroundColor: '#fff',
                                 display: 'flex',
                                 flexDirection: 'column',
+                                minHeight: '480px',
                                 transition: 'box-shadow 0.2s',
                             }}
                             onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.10)'}
@@ -154,7 +157,7 @@ export function HomePage() {
                                 <img
                                     src={auction.imageUrl}
                                     alt={auction.title}
-                                    style={{ height: '200px', width: '100%', objectFit: 'cover' }}
+                                    style={{ height: '200px', width: '100%', objectFit: 'contain', backgroundColor: '#f3f4f6' }}
                                     onError={e => { e.target.style.display = 'none'; }}
                                 />
                             ) : (
@@ -165,7 +168,7 @@ export function HomePage() {
                             <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
                                 {/* Title + badge */}
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
-                                    <span style={{ fontWeight: '700', fontSize: '1rem', color: '#111' }}>{auction.title}</span>
+                                    <span style={{ fontWeight: '700', fontSize: '1rem', color: '#111', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{auction.title}</span>
                                     <span style={{
                                         fontSize: '0.75rem',
                                         fontWeight: '600',
@@ -179,7 +182,7 @@ export function HomePage() {
                                 </div>
 
                                 {/* Description */}
-                                <p style={{ color: '#666', fontSize: '0.85rem', margin: 0, lineHeight: '1.4',
+                                <p style={{ color: '#666', fontSize: '0.85rem', margin: 0, lineHeight: '1.4', minHeight: '2.8em',
                                     display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                                     {auction.description}
                                 </p>
@@ -194,7 +197,7 @@ export function HomePage() {
                                 </div>
 
                                 {/* Price */}
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '4px' }}>
                                     <span style={{ color: '#888', fontSize: '0.85rem' }}>Aktualna cena:</span>
                                     <span style={{ fontWeight: '700', fontSize: '1.1rem', color: '#111' }}>
                                         {auction.currentBid.toLocaleString('pl-PL')} zł
